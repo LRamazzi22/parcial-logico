@@ -51,3 +51,31 @@ esBarrioCaro(Barrio):-
     vive(_, _, Barrio),
     forall(vive(_, Propiedad, Barrio), not(esPropiedadBarata(Propiedad))).
 
+% Punto 4
+
+sublista([], []).
+sublista([_ | Cola], Sublista):-sublista(Cola, Sublista).
+sublista([Cabeza|Cola], [Cabeza|Sublista]):-sublista(Cola, Sublista).
+
+tasacion(juan, 150000).
+tasacion(nico, 80000).
+tasacion(alf, 75000).
+tasacion(julian, 140000).
+tasacion(vale, 95000).
+tasacion(fer, 60000).
+
+casasQuePuedoComprarCon(Dinero, PosiblesCasas):-
+    findall(Propiedad, puedoComprarCasa(Propiedad, Dinero), ListaCasas),
+    ListaCasas \= [],
+    sublista(ListaCasas, PosiblesCasas).
+    /* sumlist(ListaValores, TotalGastado),
+    DineroRestante is Dinero - TotalGastado. */
+
+puedoComprarCasa(Propiedad, Dinero):-
+    tasacion(Propiedad, Valor),
+    Dinero > Valor.
+
+compra(Propiedad, Dinero, Restante):-
+    tasacion(Propiedad, Valor),
+    puedoComprarCasa(Propiedad, Dinero),
+    Restante is Dinero - Valor.
